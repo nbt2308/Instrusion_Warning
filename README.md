@@ -1,6 +1,6 @@
 NHỚ ĐỌC CÁI NÀY!!!!!!!!!
 
-# CÁCH CLONE các mục trong branch main trên github này 
+# CÁCH CLONE PROJECT :các mục trong branch main trên github này để khỏi mắc công tụi bây phải tải từng cái file
 b1: cài đặt git https://git-scm.com/downloads/win
 b2: sau khi cài rồi thì tạo thư mục trống để clone git về máy
 b3: vào thư mục vừa tạo, ấn chuột phải vô chỗ trống trong thư mục chọn "Open git bash here"
