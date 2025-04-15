@@ -1,13 +1,13 @@
 import requests
 
 #  token(PRIVATE) và chat_id của bot(được tạo sẵn) trên telegram
-BOT_TOKEN = "8153436686:AAFycsH481V0eeByhJIg-fdKwiku-cmFbwc"
+BOT_TOKEN = ""
 # https://api.telegram.org/bot[BOT_TOKEN]/getUpdates : dùng để lấy chat_id
 # CHAT_ID = "-1002607649012" # Group chat đã thêm bot
 CHAT_ID = "6139934019"
 
 def send_telegram():
-    url_photo = f"https://api.telegram.org/bot8153436686:AAFycsH481V0eeByhJIg-fdKwiku-cmFbwc/sendPhoto"
+    url_photo = f"https://api.telegram.org/bot[BOT_TOKEN]/sendPhoto"
 
     # tin nhắn văn bản
     message = "🚨🚨🚨 Có người xâm nhập!"
