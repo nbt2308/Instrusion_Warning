@@ -54,4 +54,4 @@ while True:
     cv2.setMouseCallback('Intrusion Warning', handle_left_click, points)
 
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows() 

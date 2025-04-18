@@ -7,7 +7,7 @@ import datetime
 import threading
 import torch
 
-# Hàm check xem điểm centroid của object có nằm trong polygon hay không 
+# Hàm check xem điểm centroid của object có nằm trong polygon hay không  
 def isInside(points, centroid):
     polygon = Polygon(points)
     centroid = Point(centroid)
@@ -123,8 +123,3 @@ class YoloDetect:
             # Gửi qua Telegram bằng thread
             thread = threading.Thread(target=send_telegram)
             thread.start()
-
-
-
-
-
