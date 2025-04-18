@@ -2,19 +2,21 @@ import cv2
 import numpy as np
 from yolodetect import YoloDetect
 
+
 #Sử dụng webcam của thiết bị(mặc định là 0)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 # Chứa các điểm người dùng click để tạo đa giác
 points = []
 
-# Sử dụng model YOLO
-model = YoloDetect("model/yolov10n.pt")
+# Sử dụng các model YOLO
+model = YoloDetect("model/yolo11n.pt")
 
 # lưu các điểm click chuột trái đó vào list points
 def handle_left_click(event, x, y,flags,points):
     if event == cv2.EVENT_LBUTTONDOWN:
         points.append([x, y])
+
 
 # Dùng để vẽ polygon vào frame bằng các điểm được lưu trong list points
 def draw_polygon (frame, points):
@@ -45,6 +47,8 @@ while True:
         points.append(points[0])
         detect = True
 
+    cv2.putText(frame,"Press d to detect", (450, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (247, 0, 0), 2)
+    cv2.putText(frame,"Press q to quit", (450, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (247, 0, 0), 2)
     # Hien anh ra man hinh
     cv2.imshow("Intrusion Warning", frame)
 

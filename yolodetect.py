@@ -5,6 +5,7 @@ from ultralytics import YOLO
 from telegram_utils import send_telegram
 import datetime
 import threading
+import torch
 
 # Hàm check xem điểm centroid của object có nằm trong polygon hay không
 def isInside(points, centroid):
@@ -15,10 +16,14 @@ def isInside(points, centroid):
 
 #Nhận diện
 class YoloDetect:
-    def __init__(self, model_path="yolov10n.pt"):
-        self.model = YOLO(model_path)
+    def __init__(self, model_path="yolo11n.pt"):
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model = YOLO(model_path).to(device)
+        self.device = device
+        print(f"YOLO model is running on: {self.device}")
         self.last_alert = None
         self.alert_interval = 5 # giây
+        
 
     # Hàm tính toán và vẽ tâm centroid
     def draw_centroid(self, frame, corners, draw=True, color=(0, 255, 0)):
@@ -64,9 +69,11 @@ class YoloDetect:
 
         return centroid
 
+
     def detect(self, frame,points):
         # Sử dụng model của YOLO để detect
-        results = self.model(frame)
+        results =  self.model(frame)
+        
         """
         ### result[0] là một list các kết quả tương ứng với các ảnh đã xử lý
         ### Bên trong results[0] có thuộc tính .boxes, chứa danh sách các object (bounding boxes) mà YOLO phát hiện được trên frame đó, trong trường hợp này là 0 : 'person'
