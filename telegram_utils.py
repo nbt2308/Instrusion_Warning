@@ -8,7 +8,7 @@ CHAT_ID = "-1002607649012" # Group chat đã thêm bot
 
 def send_telegram():
     url_photo = f"https://api.telegram.org/bot[BOT_TOKEN]/sendPhoto"
-
+ 
     # tin nhắn văn bản
     message = "🚨🚨🚨 Có người xâm nhập!"
 
