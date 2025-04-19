@@ -27,6 +27,7 @@ def draw_polygon (frame, points):
 
 
 detect = False
+
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -36,6 +37,7 @@ while True:
     # Vẽ polygon
     frame = draw_polygon(frame, points)
 
+    # Nếu detect là True thì gọi hàm detect của model YOLO
     if detect:
         result = model.detect(frame,points)
 
@@ -43,12 +45,16 @@ while True:
     if key == ord('q'):
         break
     elif key == ord('d'):
+        if len(points) < 3:
+            print("Please select at least 3 points to detect")
+            continue
         points.append(points[0])
         detect = True
-
+    
+    # Hien anh ra man hinh
+    cv2.putText(frame,"Please select at least 3 points to detect", (160,450 ), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (247, 0, 0), 2)
     cv2.putText(frame,"Press d to detect", (450, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (247, 0, 0), 2)
     cv2.putText(frame,"Press q to quit", (450, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (247, 0, 0), 2)
-    # Hien anh ra man hinh
     cv2.imshow("Intrusion Warning", frame)
 
     cv2.setMouseCallback('Intrusion Warning', handle_left_click, points)

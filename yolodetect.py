@@ -6,6 +6,8 @@ from telegram_utils import send_telegram
 import datetime
 import threading
 import torch
+import pygame
+
 
 # Hàm check xem điểm centroid của object có nằm trong polygon hay không  
 def isInside(points, centroid):
@@ -116,7 +118,13 @@ class YoloDetect:
         # Tính khoảng thời gian từ lần gửi cảnh báo trước đến hiện tại
         if self.last_alert is None or (now - self.last_alert).total_seconds() >= self.alert_interval:
             self.last_alert = now
-
+            # Khi có người xâm nhập sẽ phát ra âm thanh cảnh báo
+            try:
+                pygame.mixer.init()
+                pygame.mixer.music.load("sounds/alert.mp3")
+                pygame.mixer.music.play()
+            except Exception as e:
+                print("Lỗi âm thanh:", e)
             # Lưu ảnh cảnh báo(ảnh này sẽ được cập nhật sau mỗi lần cảnh báo)
             cv2.imwrite("Alert_nofications/alert.png", frame)
 
