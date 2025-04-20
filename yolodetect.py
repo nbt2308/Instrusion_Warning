@@ -7,6 +7,7 @@ import datetime
 import threading
 import torch
 import pygame
+from face_utils import FaceRecognizer
 
 
 # Hàm check xem điểm centroid của object có nằm trong polygon hay không  
@@ -25,6 +26,7 @@ class YoloDetect:
         print(f"YOLO model is running on: {self.device}")
         self.last_alert = None
         self.alert_interval = 5 # giây
+        self.face_recognizer = FaceRecognizer("authorized_face") 
         
 
     # Hàm tính toán và vẽ tâm centroid
@@ -106,8 +108,33 @@ class YoloDetect:
             # Vẽ centroid lên frame khi đã detect được object
             centroid=self.draw_centroid(frame, [pt1, pt2, pt3, pt4])
             # Check xem có tồn tại centroid hay centroid có nằm trong polygon hay không
-            if centroid and isInside(points, centroid):
+            # Check xem object có trong vùng cấm không
+            bbox = (x1, y1, x2, y2)
+            authorized = self.face_recognizer.is_authorized(frame, bbox)
+
+            # Luôn dò khuôn mặt để vẽ label & bbox
+            person_crop = frame[y1:y2, x1:x2]
+            gray = cv2.cvtColor(person_crop, cv2.COLOR_BGR2GRAY)
+            faces = self.face_recognizer.face_cascade.detectMultiScale(gray, 1.1, 5)
+
+            if len(faces) > 0:
+                fx, fy, fw, fh = faces[0]
+                face_x1, face_y1 = x1 + fx, y1 + fy
+                face_x2, face_y2 = face_x1 + fw, face_y1 + fh
+
+                # Vẽ khung khuôn mặt
+                color = (0, 255, 0) if authorized else (0, 0, 255)
+                label = "Authorized" if authorized else "Unauthorized"
+                cv2.rectangle(frame, (face_x1, face_y1), (face_x2, face_y2), color, 2)
+                cv2.putText(frame, label, (face_x1, face_y1 - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+
+            # Cảnh báo nếu là người lạ và centroid nằm trong vùng cấm
+            if not authorized and centroid and isInside(points, centroid):
                 self.alert(frame)
+
+            # if centroid and isInside(points, centroid):  
+            #   self.alert(frame)
 
         return frame
 

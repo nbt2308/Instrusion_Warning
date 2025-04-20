@@ -3,7 +3,7 @@ import numpy as np
 from yolodetect import YoloDetect
 
 #Sử dụng webcam của thiết bị(mặc định là 0)
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(1)
 
 # Chứa các điểm người dùng click để tạo đa giác
 points = []
